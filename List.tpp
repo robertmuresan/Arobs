@@ -26,6 +26,19 @@ List<T>::List(const List& rhs)
 }
 
 template <typename T>
+List<T>::List(List&& rhs)
+{
+    m_size = rhs.m_size;
+    rhs.m_size = 0;
+
+    m_head = rhs.m_head;
+    rhs.m_head = nullptr;
+
+    m_tail = rhs.m_tail;
+    rhs.m_tail = nullptr;
+}
+
+template <typename T>
 List<T>::~List()
 {
     ListNode<T>* current = m_head;
@@ -49,7 +62,6 @@ const T& List<T>::operator[](std::size_t idx) const
         p = p->getNext();
         --idx;
     }
-
     return p->getData();
 }
 
@@ -62,7 +74,6 @@ T& List<T>::operator[](std::size_t idx)
         p = p->getNext();
         --idx;
     }
-
     return p->getData(); 
 }
 
@@ -80,9 +91,28 @@ List<T>& List<T>::operator=(const List& rhs)
        ++m_size;
        p = p->getNext();  
    }
-
      return *this;
 }
+
+template<typename T>
+List<T>& List<T>::operator=(List&& rhs)
+{
+    while (m_head != NULL)
+    {
+        popFront();
+    }
+    m_size = rhs.m_size;
+    rhs.m_size = 0;
+
+    m_head = rhs.m_head;
+    rhs.m_head = NULL;
+
+    m_tail = rhs.m_tail;
+    rhs.m_tail = NULL;
+   
+    return *this;
+}
+
 
 template<typename U>
 std::ostream& operator<<(std::ostream& os, const List<U>& ln)
@@ -330,3 +360,20 @@ bool List<T>::print()
     }
     std::cout<< "\n";
 }
+
+template <typename T>
+ListIterator<T> List<T>::begin()
+{
+    return ListIterator<T>(m_head);
+}
+
+template <typename T>
+ListIterator<T> List<T>::end()
+{
+    return ListIterator<T>(m_tail);
+}
+
+
+
+
+
