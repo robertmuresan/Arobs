@@ -43,7 +43,23 @@ size_t SPriorityQueue<T,TContainer, TLock>::getSize()
 }
 
 template <typename T, template <typename> typename TContainer, typename TLock>
-void SPriorityQueue<T,TContainer, TLock>::push(T task)
+void SPriorityQueue<T,TContainer, TLock>::push(T& task)
+{
+    std::size_t pos = 0;
+    m_lock.lock();
+    for (std::size_t idx = 0; idx < m_container.getSize(); ++idx)
+    {
+        if (m_container.getElement() < task)
+        {
+            pos++;
+        }
+    }
+    m_container.insert(pos, task);
+    m_lock.unlock();
+}
+
+template <typename T, template <typename> typename TContainer, typename TLock>
+void SPriorityQueue<T,TContainer, TLock>::push(T&& task)
 {
     std::size_t pos = 0;
     m_lock.lock();

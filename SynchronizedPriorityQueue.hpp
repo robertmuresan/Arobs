@@ -4,10 +4,10 @@
 #include <iostream>
 #include <ostream>
 #include <mutex>
-#include "Vector.hpp"
+#include "List.hpp"
 
 template <typename T, template <typename> typename TContainer = Vector, typename TLock = std::mutex>
-class SPRIORITYQUEUE_HPP{
+class SPriorityQueue{
     public:
         SPriorityQueue();
         SPriorityQueue(const SPriorityQueue& rhs);
@@ -16,7 +16,9 @@ class SPRIORITYQUEUE_HPP{
         SPriorityQueue<T, TContainer, TLock>& operator=(const SPriorityQueue& rhs);
         size_t getSize();
 
-        void push(T element);
+        void push(T& element);
+        void push(T&& element);
+
         T pop();
         bool tryPop(T& value);
 
@@ -26,7 +28,7 @@ class SPRIORITYQUEUE_HPP{
     template <typename U, template <typename> typename UTContainer, typename UTLock>
     friend std::ostream& operator<<(std::ostream& os, const SPriorityQueue<U, UTContainer, UTLock>& pq);
 
-    typename TContainer<T>::TIterator begin();
+    typename TContainer<T>::TIterator begin(); 
     typename TContainer<T>::TIterator end();
 
 private:
@@ -35,8 +37,8 @@ private:
      TLock m_lock;
 
 };     
-
-#endif //SPRIORITYQUEUE_HPP
+#include "SynchronizedPriorityQueue.hpp"
+#endif 
 
 
 

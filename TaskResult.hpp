@@ -1,4 +1,12 @@
 
 class TaskResult{
+    public: 
+    {
+        
+    }
+
+    private:{
+
+    }
 
 };

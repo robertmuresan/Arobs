@@ -58,7 +58,7 @@ VectorIterator<T>& VectorIterator<T>::operator-=(std::size_t difference)
 template <typename T>
 VectorIterator<T> VectorIterator<T>::operator+(std::size_t difference)
 {
-    VectorIterator<T> it;
+    VectorIterator<T> it(0);
     it.m_value = m_value + difference;
     return it;
 }
@@ -66,7 +66,7 @@ VectorIterator<T> VectorIterator<T>::operator+(std::size_t difference)
 template <typename T>
 VectorIterator<T> VectorIterator<T>::operator-(std::size_t difference)
 {
-    VectorIterator<T> it;
+    VectorIterator<T> it(0);
     it.m_value = m_value - difference;
     return it;
 }

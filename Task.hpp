@@ -5,20 +5,23 @@
 #include <iostream>
 #include <ostream>
 #include <string>
+#include "TaskArgument.hpp"
+#include "TaskResult.hpp"
 
 class Task{
     public:
-        Task();
-        std::string getDescription();
-        int8_t getPriority();
+    Task(std::int64_t prio, std::function<TaskResult()> func);
 
-        bool operator<(const Task& rhs);
-        friend std::ostream& operator<<(std::ostream& os, const Task& t);
+    TaskResult operator()();
+    bool operator<(const Task& rhs);
+    friend std::ostream& operator<<(std::ostream& os, const Task& t);
+    std::function<TaskResult()> get_m_function();
     
-    private:
-        std::string m_description;
-        int8_t m_priority;
+private:
+    std::int64_t m_priority;
+    std::function<TaskResult()> m_function;
+    std::int64_t getPriority();
 };
 
 #include "Task.tpp"
-#endif //TASK_HPP
+#endif 

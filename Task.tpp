@@ -3,18 +3,13 @@
 #include <ostream>
 #include <string.h>
 
-Task::Task() 
+Task::Task(int64_t prio, std::function<TaskResult()> func) 
 {
-    m_description = NULL;
-    m_priority = -1;
+    m_priority = prio;
+    m_function = func;
 }
 
-std::string Task::getDescription()
-{
-    return m_description;
-}
-
-int8_t Task::getPriority()
+int64_t Task::getPriority()
 {
     return m_priority;
 }
@@ -28,12 +23,21 @@ bool Task::operator<(const Task& rhs)
     return false;
 }
 
+TaskResult Task::operator()()
+{
+    return m_function();
+}
+
 std::ostream& operator<<(std::ostream& os, const Task& t)
 {
-    os << "description: " 
-       << t.m_description << "\n";
-    os << "priority: "
+    os << "priority: " 
        << t.m_priority << "\n";
 
     return os;
+}
+
+
+std::function<TaskResult()> Task::get_m_function()
+{
+    return m_function;
 }

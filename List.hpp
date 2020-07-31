@@ -9,6 +9,9 @@ template <typename T>
 class List
 {
     public:
+
+    using TIterator = ListIterator<T>;
+
     List();
     List(const List& rhs);
     List(List&& rhs);
@@ -22,11 +25,11 @@ class List
     template <typename U>
     friend std::ostream& operator<<(std::ostream& os, const List<U>& vec);
 
-    void insert(std::size_t idx, T element);
+    void insert(TIterator pos, T element);
     void pushFront(T element);
     void pushBack(T element);
 
-    void erase(std::size_t idx);
+    void erase(TIterator pos);
     void popFront();
     void popBack();
 
@@ -37,7 +40,7 @@ class List
     T& operator[](std::size_t idx);
     void setElement(std::size_t idx, T element);
     void setFront(T element);
-    void setBack(T element);
+    
 
     void clear();
     bool empty();
@@ -45,8 +48,8 @@ class List
 
     template <typename U>
     friend std::ostream& operator<<(std::ostream& os, const List<U>& vec);
-    ListIterator<T> begin();
-    ListIterator<T> end();
+    TIterator begin();
+    TIterator end();
 
     private:
         std::size_t m_size;

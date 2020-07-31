@@ -97,10 +97,7 @@ List<T>& List<T>::operator=(const List& rhs)
 template<typename T>
 List<T>& List<T>::operator=(List&& rhs)
 {
-    while (m_head != NULL)
-    {
-        popFront();
-    }
+    
     m_size = rhs.m_size;
     rhs.m_size = 0;
 
@@ -128,28 +125,22 @@ std::ostream& operator<<(std::ostream& os, const List<U>& ln)
 }
 
 template <typename T>
-void List<T>::insert(size_t idx, T element)
+void List<T>::insert(TIterator pos, T element)
 {
-    if(idx < 0 || idx > m_size) return;
-
-    ListNode<T>* node = new ListNode<T>(NULL,NULL,element);
-
-    ListNode<T>* p = m_head;
-    if(idx == 0) 
+   
+    if(!(pos != begin())) 
     {
         pushFront(element);
         return;
     }
-    if(idx == m_size)
+    if(!(pos != end()))
     {
         pushBack(element);
         return;
     }
-    while(idx)
-    {
-        p = p->getNext();
-        --idx;
-    }
+    
+    ListNode<T>* node = new ListNode<T>(NULL,NULL,element);
+    ListNode<T>* p = pos.get_m_value();
 
     p->getPrev()->setNext(node);
     node->setPrev(p->getPrev());
@@ -233,25 +224,24 @@ size_t List<T>::getSize()
 }
 
 template <typename T>
-void List<T>::erase(size_t idx)
+void List<T>::erase(TIterator pos)
 {
-    if(idx < 0 || idx > m_size) return;
 
     ListNode<T>* p = m_head;
-    if(idx == 0) 
+    if(!(pos != begin())) 
     {
         popFront();
         return;
     }
-    if(idx == m_size)
+    if(!(pos != end()))
     {
         popBack();
         return;
     }
-    while(idx)
+    while(pos != begin())
     {
         p = p->getNext();
-        --idx;
+        --pos;
     }
 
     delete p;
@@ -265,11 +255,6 @@ void List<T>::popFront()
     m_head = m_head->getNext();
     delete p;
     --m_size;
-
-    if(m_size == 0)
-    {
-        m_head = m_tail = NULL;
-    }
 }
 
 template <typename T>
@@ -281,11 +266,6 @@ void List<T>::popBack()
         m_tail = m_tail->getPrev();
         delete p;
         --m_size;
-
-        if(m_size == 0)
-    {
-        m_head = m_tail = NULL;
-    }
     }
     
 }
@@ -349,17 +329,6 @@ bool List<T>::empty()
    return m_size == 0;
 }
 
-template <typename T>
-bool List<T>::print()
-{
-    ListNode<T>* p = m_gead;
-    while (p != NULL)
-    {
-        std::cout<< std:to_string(p->getData()) << " ";
-        p = p->getNext;
-    }
-    std::cout<< "\n";
-}
 
 template <typename T>
 ListIterator<T> List<T>::begin()

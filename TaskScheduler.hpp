@@ -6,6 +6,7 @@
 #include <future>
 #include <thread>
 #include <atomic>
+#include "Vector.hpp"
 
 class TaskScheduler
 {
@@ -17,11 +18,22 @@ class TaskScheduler
        void stop();
 
     private:
-       SPriorityQueue<std::packaged_task<Task>> m_tasks;
-       Vector<std::thread> m_thread;
+       SPriorityQueue<std::packaged_task<TaskResult()>> m_tasks;
+       Vector<std::thread> m_threads;
        std::atomic<bool> m_stop;
 
        void processTasks();
+       {
+           while(!m_stop)
+         {
+            std::packaged_task<TaskResult()> popRez;
+            if(m_tasks.tryPop(popRez))
+            {
+                popRez();
+            }
+         }
+       }
 };
 
-#endif //TASKSCHEDULER_HPP
+#include "TaskScheduler.tpp"
+#endif 

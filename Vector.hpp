@@ -1,61 +1,72 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include <cstdlib>
+#include <cstddef>
 #include <iostream>
 #include <ostream>
 #include <string.h>
+#include "VectorIterator.hpp"
 
 template <typename T>
 class Vector{
     public:
+      using TIterator = VectorIterator<T>;
 
       Vector();
       Vector(const Vector& rhs);
+      Vector(Vector&& rhs);
       ~Vector();
 
-      size_t getSize();
-      size_t getCapacity();
+      std::size_t getSize();
+      std::size_t getCapacity();
 
-      const T& operator[](std::size_t idx) const;
-      T& operator[](std::size_t idx);
-      Vector <T>& operator=(const Vector& rhs);
+       Vector<T>& operator=(const Vector& rhs);
+       Vector<T>& operator=(Vector&& rhs);
 
-      template<typename U>
-      friend std::ostream& operator<<(std::ostream& os, const Vector<U>& vec);
+      void insert(TIterator pos, T& element);
+      void insert(TIterator pos, T&& element);
 
-      void insert(size_t idx, T element);
+      void pushFront(T& element);
+      void pushFront(T&& element);
 
-      void pushFront(T element);
-      void pushBack(T element);
+      void pushBack(T& element);
+      void pushBack(T&& element);
 
-      void erase(size_t idx);
+      void erase(TIterator pos);
 
       void popFront();
       void popBack()
 
-      T getElement(size_t idx);
+      T getElement(TIterator pos);
       T getFront();
       T getBack();
 
-      void setElement(size_t idx, T element);
+      const T& operator[](std::size_t idx) const;
+      T& operator[](std::size_t idx);
+      
       void setFront(T element);
       void setBack(T element);
 
       void clear();
       void empty();
       void print();
-      void reserve(size_t newCapacity);
+
+       template<typename U>
+    friend std::ostream& operator<<(std::ostream& os, const Vector<U>& vec);
+
+    void reserve(std::size_t newCapacity);
+    void resize(std::size_t newSize);
+
+    TIterator begin();
+    TIterator end();
        
-
-
     private:
-        size_t m_capacity;
-        size_t m_size;
+        std::size_t m_capacity;
+        std::size_t m_size;
         T* m_data;
 
 };
 
 
 #include "Vector.tpp"
-#endif //VECTOR_HPP
+#endif 
